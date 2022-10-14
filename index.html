@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+    .list {
+        border: solid 1px gray;
+        border-radius: 20px;
+        overflow: hidden;
+        clear: both;
+    }
+
+
+</style>
+<body>
+    <h1>메뉴 리스트입니다</h1>
+    <h2>식당이름</h2>
+    <p>메뉴카테고리대분류명-메뉴이름</p>
+    <button id="addmenu">추가</button>
+
+
+    <script>
+
+        async function foodImageGet() {
+
+            const response =await fetch("./공공데이터.json")
+            menuData = await response.json();
+
+            function menuTag(menuName,menuRe,menuNm){
+                const menuNameTag = document.createElement("h3")
+                menuNameTag.innerHTML = menuName
+                const menuReTag = document.createElement("p")
+                menuReTag.innerHTML = menuNm+ " "+"-"+ " "+menuRe;
+                const menuBox = document.createElement("div");
+                menuBox.append(menuNameTag);
+                menuBox.append(menuReTag);
+                menuBox.classList.add("list");
+
+                document.querySelector("body").append(menuBox)
+            }
+            let count =0;
+            for(let i=0; i<5; i++){
+                count=i;
+                
+                menuTag(menuData.body[count].RSTR_NM,
+                        menuData.body[count].MENU_NM,
+                        menuData.body[count].MENU_CTGRY_LCLAS_NM)
+            }
+            
+            let nextCount =6;
+            const button =document.querySelector('#addmenu')
+            button.addEventListener('click',()=>{
+                for(let i=5; i<nextCount; i++){
+                        count=i;
+                    }
+                    nextCount++
+                    menuTag(menuData.body[count].RSTR_NM,
+                            menuData.body[count].MENU_NM,
+                            menuData.body[count].MENU_CTGRY_LCLAS_NM)
+                }
+        )}
+            foodImageGet()
+    </script>
+</body>
+
+</html>
